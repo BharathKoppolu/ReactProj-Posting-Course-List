@@ -1,0 +1,17 @@
+Adding Form Buttons
+
+
+for forms onSubmit={}
+
+will automatically initiate a HTTP request to the server side
+
+to prevent that:
+
+  const submitHandler = (event) => {
+    event.preventDefault(); //***
+    const postData = {
+      body: enteredBody,
+      author: enteredAuthor
+    };
+    console.log(postData);
+  }; 

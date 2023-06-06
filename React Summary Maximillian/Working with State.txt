@@ -1,0 +1,89 @@
+Working with State
+
+
+just because we change some variable or we have an event listener etc. 
+
+react will not rerun or render the js file again
+
+> So, for this to properly update the UI if needed, we need to use React Hooks
+
+> must execute thm inside of component functions 
+it'll give an error if we execute them inside a javascript function
+
+useState can be an object, a number, a string etc.
+
+> we can set the daefault value as an argument to the useState
+
+> useState returns an array 
+which always contains only two elements
+1) current State
+2) updated State function
+
+if we call the updateState function, React will call the component function again
+
+React will update the parts in UI that need updating
+
+React will make comparision behind the scences
+between different snapshots a donly update the parts requied instead of updating the whole DOM
+
+
+    const stateData[] = useState('');
+    stateData[0] //curent State
+    stateData[1] //state updating function
+
+---------------------NewPost.js
+import classes from './NewPost.module.css';
+
+const  NewPost = () => {
+    let enteredBody = ''; 
+    
+    const onChangeHandler = (event) => {
+        enteredBody = event.target.value;
+    } 
+
+  return (
+    <form className={classes.form}>
+      <p>
+        <label htmlFor="body">Text</label>
+        <textarea id="body" required rows={3} onChange={onChangeHandler}/>
+      </p>
+      <p>
+        <label htmlFor="name">Your name</label>
+        <input type="text" id="name" required />
+      </p>
+    </form>
+  );
+}
+
+export default NewPost;
+
+
+
+-------with useState()
+
+import React, {useState} from 'react';
+import classes from './NewPost.module.css';
+
+const  NewPost = () => {
+    const [enteredBody, setEnteredBody] = useState('');
+    
+    const onChangeHandler = (event) => {
+        setEnteredBody(event.target.value);
+    } 
+
+  return (
+    <form className={classes.form}>
+      <p>
+        <label htmlFor="body">Text</label>
+        <textarea id="body" required rows={3} onChange={onChangeHandler}/>
+      </p>
+      <p>{enteredBody}</p>
+      <p>
+        <label htmlFor="name">Your name</label>
+        <input type="text" id="name" required />
+      </p>
+    </form>
+  );
+}
+
+export default NewPost;

@@ -1,0 +1,73 @@
+State & Conditional Content
+
+using one state that the modal isVisible
+another that it's not visible
+
+
+switch it from is visible to is not visible.
+
+And then we wanna display this entire modal
+
+conditionally based on that state.
+
+So it's in the end a three step process:
+
+register and use state,
+
+add an event listener to this backdrop,
+
+and then use that state to show, or not show, this modal.
+
+
+import React, {useState} from 'react';
+import Post from './Post';
+import classes from './PostLists.module.css'
+import NewPost from './NewPost';
+import Modal from './Modal';
+
+const PostLists = () => {
+    const [modalIsVisible, setModalIsVisible] = useState(true);
+    const [enteredBody, setEnteredBody] = useState('');
+    const [enteredAuthor, setEnteredAuthor] = useState('');
+
+    const hideModalHandler = () =>{
+        setModalIsVisible(false);
+    };
+    const bodyChangeHandler = (event) => {
+        setEnteredBody(event.target.value);
+    };
+    const authorChangeHandler = (event) => {
+        setEnteredAuthor(event.target.value);
+    }; 
+    return (
+        <>
+            {modalIsVisible &&  
+                (<Modal onClose={hideModalHandler}>
+                    <NewPost onBodyChange={bodyChangeHandler} onAuthorChange={authorChangeHandler}/>
+                </Modal>) 
+            }
+            
+            <ul className={classes.postLists}>
+                <Post author={enteredAuthor} name={enteredBody} />
+                <Post author="Angela Yu" name="Web Dev Course" />
+            </ul>
+        </>
+
+    );
+}
+
+export default PostLists;
+
+
+--------Modal.js
+import classes from './Modal.module.css';
+
+const Modal = (props) => {
+    return (
+        <>
+            <div className={classes.backdrop} onClick={props.onClose}/>
+            <dialog open className={classes.modal}>{props.children}</dialog>
+        </>
+    );
+}
+export default Modal;

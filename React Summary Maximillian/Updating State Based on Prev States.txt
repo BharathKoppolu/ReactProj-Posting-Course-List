@@ -1,0 +1,92 @@
+Updating State Based on Prev States
+>> Move the states to New post as we nned to dynamically enter the Posts insted of hard coded data from App.js
+
+>> bodyChangeHandler and
+authorChangeHandler
+
+
+>> And add submitHandler and then
+execute the onCancel function to get the modal closed on click of submit button
+
+>> accept the onCancel props  in NewPost.js from PostLists.js which sent via props from App.js using hideModal Handler
+
+
+----------NewPost.js
+import classes from './NewPost.module.css';
+import React, {useState} from 'react';
+
+const  NewPost = (props) => {
+ 
+  const [enteredBody, setEnteredBody] = useState('');
+  const [enteredAuthor, setEnteredAuthor] = useState('');
+
+  const bodyChangeHandler = (event) => {
+    setEnteredBody(event.target.value);
+  };
+  const authorChangeHandler = (event) => {
+      setEnteredAuthor(event.target.value);
+  };
+  const submitHandler = (event) => {
+    event.preventDefault();
+    const postData = {
+      body: enteredBody,
+      author: enteredAuthor
+    };
+    console.log(postData);
+    props.onCancel();
+  }; 
+
+
+  return (
+    <form className={classes.form} onSubmit={submitHandler}>
+      <p>
+        <label htmlFor="body">Text</label>
+        <textarea id="body" required rows={3} onChange={bodyChangeHandler} />
+      </p>
+      
+      <p>
+        <label htmlFor="name">Your name</label>
+        <input type="text" id="name" required onChange={authorChangeHandler} />
+      </p>
+
+      <p className={classes.actions}>
+        <button type="button" onClick={props.onCancel}>Cancel</button>
+        <button type="submit">Submit</button>
+      </p>
+    </form>
+  );
+}
+
+export default NewPost;
+
+
+-------PostLists.js
+import React, {useState} from 'react';
+import Post from './Post';
+import classes from './PostLists.module.css'
+import NewPost from './NewPost';
+import Modal from './Modal';
+
+const PostLists = (props) => {
+        return (
+        <>
+            {props.isPosting &&  
+                (<Modal onClose={props.onStopPosting}>
+                    <NewPost 
+                    onCancel={props.onStopPosting}    
+                    />
+                </Modal>) 
+            }
+            
+            <ul className={classes.postLists}>
+                <Post author="Angela Yu" name="Web Dev Course" />
+            </ul>
+        </>
+
+    );
+}
+
+export default PostLists;
+
+
+----------

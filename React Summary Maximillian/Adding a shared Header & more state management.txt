@@ -1,0 +1,133 @@
+Adding a shared Header & more state management
+
+
+------App.js
+import React, { useState } from 'react';
+import PostLists from './components/PostLists';
+import MainHeader from './components/MainHeader';
+
+const App = () => {
+    const [modalIsVisible, setModalIsVisible] = useState(false);
+    
+    const hideModalHandler = () =>{
+        setModalIsVisible(false);
+    };
+
+    const showModalHandler = () =>{
+        setModalIsVisible(true);
+    };
+  return (
+    <div>
+        <MainHeader onCreatePost={showModalHandler}/>
+        <PostLists isPosting={modalIsVisible} onStopPosting={hideModalHandler}/>
+    </div>
+  );
+}
+export default App;
+
+
+
+------ PostLists.js
+
+import React, {useState} from 'react';
+import Post from './Post';
+import classes from './PostLists.module.css'
+import NewPost from './NewPost';
+import Modal from './Modal';
+
+const PostLists = (props) => {
+    
+    const [enteredBody, setEnteredBody] = useState('');
+    const [enteredAuthor, setEnteredAuthor] = useState('');
+
+
+    const bodyChangeHandler = (event) => {
+        setEnteredBody(event.target.value);
+    };
+    const authorChangeHandler = (event) => {
+        setEnteredAuthor(event.target.value);
+    }; 
+    return (
+        <>
+            {props.isPosting &&  
+                (<Modal onClose={props.onStopPosting}>
+                    <NewPost onBodyChange={bodyChangeHandler} onAuthorChange={authorChangeHandler}/>
+                </Modal>) 
+            }
+            
+            <ul className={classes.postLists}>
+                <Post author={enteredAuthor} name={enteredBody} />
+                <Post author="Angela Yu" name="Web Dev Course" />
+            </ul>
+        </>
+
+    );
+}
+
+export default PostLists;
+
+
+------MainHeader.js
+
+import { MdPostAdd, MdMessage } from 'react-icons/md';
+
+import classes from './MainHeader.module.css';
+
+function MainHeader({ onCreatePost }) {
+  return (
+    <header className={classes.header}>
+      <h1 className={classes.logo}>
+        <MdMessage />
+        React Poster
+      </h1>
+      <p>
+        <button className={classes.button} onClick={onCreatePost}>
+          <MdPostAdd size={18} />
+          New Post
+        </button>
+      </p>
+    </header>
+  );
+}
+
+export default MainHeader;
+
+
+
+------MainHeader.module.css
+.header {
+    /* padding: 2rem 10%; */
+    margin: 2rem 10%;
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ece1fa;
+  }
+  
+  .logo {
+    font-size: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    color: #ece1fa;
+  }
+  
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #a990fb;
+    color: #2a2630;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .button:hover {
+    background-color: #8c6cf7;
+  }

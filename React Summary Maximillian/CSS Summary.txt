@@ -1,0 +1,68 @@
+CSS Styling
+post.js
+post.module.css
+
+import classes from './module.css';
+
+
+this will ensure the class selectors are unique
+
+
+<div className={classes.post}> 
+
+
+
+--------------------post.module.css
+
+
+.post {
+    background-color: lightblue;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    text-align: center;
+  }
+
+.name {
+    font-size: 1.25rem;
+    font-style: italic;
+}
+
+.author {
+    font-size: 0.8rem;
+    font-weight:bold;
+    text-transform: uppercase;
+}
+
+
+-------------------- post.js
+
+import React from 'react';
+import classes from './Post.module.css';
+const Post = (props) => {
+
+    return (
+        <div className={classes.post}>
+            <p className={classes.name}>{props.name}</p>
+            <p className={classes.author}>{props.author}</p>
+        </div>
+    );
+}
+
+export default Post;
+
+
+------------------------ App.js
+
+import React, { useState } from 'react';
+import Post from './components/Post';
+
+const App = () => {
+  return (
+    <div>
+        <Post name="React Course" author="Maximillian"/>
+        <Post name="Web Dev Course" author="Angela Yu"/>
+    </div>
+  );
+}
+
+export default App;
